@@ -1,4 +1,5 @@
 #include <iostream>
+#include <conio.h>
 
 using namespace std;
 
@@ -9,14 +10,6 @@ int x, y, fruitX, fruitY, Score;
 enum eDirection { STOP=0, LEFT, RIGHT, UP, DOWN};
 eDirection dir;
 
-void input()
-{
-
-}
-void logic()
-{
-
-}
 void setup()
 {
     gameOver = false;
@@ -30,7 +23,7 @@ void setup()
 }
 void draw()
 {
-    system("clear");
+    system("cls");
     for (int i = 0; i < width; i++)
     cout << "#";
     cout << endl;
@@ -40,22 +33,83 @@ void draw()
         for (int j = 0; j < width; j++)
         {
             if (j == 0)
-            cout << "#";
-            
-            cout << " ";
-            if (j = width-1)
-            cout << "#";
+                cout << "#";
+            if (i == y && j == x)
+                cout << "0";
+            else if (i == fruitY && j == fruitX)
+                cout << "F";
+            else
+                cout << " ";
+            if (j == width-1)
+                cout << "#";
 
         }
 
         cout << endl;
     }
-
-
-    for (int i = 0; i < width; i++)
+    
+    for (int i = 0; i < width+2; i++)
     cout << "#";
+    cout << endl;
+    cout << "SCORE" << Score << endl;
 
 
+}
+
+void input()
+{
+
+    if (_kbhit())
+    {
+        switch (_getch())
+        {
+        case 'a':
+            dir = LEFT;
+            break;
+        case 'd':
+            dir = RIGHT;
+            break;
+        case 'w':
+            dir = UP;
+            break;
+        case 's':
+            dir = DOWN;
+            break;
+        case 'q':
+            gameOver = true;
+            break;  
+        }
+    }
+
+}
+void logic()
+{
+    switch (dir)
+   {
+        case LEFT:
+           x--;
+           break;
+        case RIGHT:
+           x++;
+           break;
+        case UP:
+           y--;
+           break;
+        case DOWN:
+           y++;
+           break;
+
+   }
+
+   if (x > width || x < 0 || y > height || y < 0)
+   gameOver = true;
+
+   if (x == fruitX && y == fruitY)
+   {
+        Score +=10;
+        fruitX = rand() % width;
+        fruitY = rand() % height;
+   }
 }
 
 int main()
